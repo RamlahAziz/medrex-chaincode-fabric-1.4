@@ -1,0 +1,23 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: medrex.com
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.medrex.com
+    #EnableNodeOUs: true
+    # 2 peers just in case we need the second one, one will be anchor, the second can just party
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Org2
+    Domain: org2.medrex.com
+    #EnableNodeOUs: true
+    # 2 peers here as well
+    Template:
+      Count: 2
+    Users:
+      Count: 1
