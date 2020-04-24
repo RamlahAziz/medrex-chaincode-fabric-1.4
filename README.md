@@ -27,7 +27,15 @@ $ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./config/Org1MSPa
 
 $ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./config/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
 
-Then created and edited the docker file. This needs to be edited. I think we should look at Jawad's and byfn for this
+Then created and edited the docker files
+
+$ docker-compose -f docker-compose-ca.yml up -d ca.org1.medrex.com ca.org2.medrex.com
+$ docker-compose -f docker-compose-cli.yml up -d orderer.medrex.com peer0.org1.medrex.com peer1.org1.medrex.com peer0.org2.medrex.com peer1.org2.medrex.com
+$ docker-compose -f docker-compose-couch.yml up -d couchdb0 couchdb1 couchdb2 couchdb3
+ 
+ Last command is giving me an error: ERROR: The Compose file is invalid because:
+Service peer0.org1.medrex.com has neither an image nor a build context specified. At least one must be provided.
+
 
 
 ERROR: cryptogen: no such command
@@ -37,3 +45,6 @@ Make sure your binaries are in the local path by opening ~/.bashrc or ~/.profile
 export PATH=~/fabric-samples/bin:$PATH
 
 Then save and exit and execute source ~/.bashrc or source ~/.profile
+
+ERROR: WARNING: Found orphan containers (ca.org2.medrex.com, ca.org1.medrex.com) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
+SOLUTION: ??

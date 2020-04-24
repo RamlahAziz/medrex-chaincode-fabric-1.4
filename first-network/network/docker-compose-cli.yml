@@ -30,6 +30,9 @@ services:
     extends:
       file:  base/docker-compose-base.yaml
       service: peer0.org1.medrex.com
+    #depends_on:
+#     - orderer.medrex.com
+#     - couchdb
     networks:
       - basic
 
