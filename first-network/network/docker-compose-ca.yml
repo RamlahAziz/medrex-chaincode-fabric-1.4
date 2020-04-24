@@ -11,7 +11,7 @@ networks:
 services:
     #the service container names should all be different i think but copying jawads naming convention.
   ca.org1.medrex.com:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.4.6
     environment:
     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
     - FABRIC_CA_SERVER_CA_NAME=ca.org1.medrex.com
@@ -32,7 +32,7 @@ services:
 
 #should be ca1 
   ca.org2.medrex.com:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.4.6
     environment:
     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
     - FABRIC_CA_SERVER_CA_NAME=ca.org2.medrex.com
