@@ -38,6 +38,7 @@ services:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/org1.medrex.com/peers/peer0.org1.medrex.com/msp:/etc/hyperledger/fabric/msp
         - ../crypto-config/peerOrganizations/org1.medrex.com/peers/peer0.org1.medrex.com/tls:/etc/hyperledger/fabric/tls
+        ## for data persistence https://hyperledger-fabric.readthedocs.io/en/release-1.4/build_network.html#a-note-on-data-persistence
         - peer0.org1.medrex.com:/var/hyperledger/production
     ports:
       - 7051:7051

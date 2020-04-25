@@ -36,15 +36,21 @@ $ docker-compose -f docker-compose-couch.yml up -d couchdb0 couchdb1 couchdb2 co
  Last command is giving me an error: ERROR: The Compose file is invalid because:
 Service peer0.org1.medrex.com has neither an image nor a build context specified. At least one must be provided.
 
-# Trying byfn commands 
+# Byfn commands 
 
 $ cryptogen generate --config=./crypto-config.yaml
+
 $ mkdir channel-artifacts (same as config before)
+
 $ export FABRIC_CFG_PATH=$PWD
-$ configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 $ export CHANNEL_NAME=mychannel
+
+$ configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 $ configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-$ docker-compose -f docker-compose-cli.yaml up -d
+
+// to use couch instead of goleveldb 
+$ docker-compose -f docker-compose-cli.yml -f docker-compose-ca.yml -f docker-compose-couch.yml up -d
+
 $ docker exec -it cli bash (this will start the cli bash whatever that is and all cmds ro be typed after the # )
 
 Creating the channel
@@ -65,6 +71,61 @@ Updating anchor peers
 $ peer channel update -o orderer.medrex.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Org1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/medrex.com/orderers/orderer.medrex.com/msp/tlscacerts/tlsca.medrex.com-cert.pem
 
 $ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/users/Admin@org2.medrex.com/msp CORE_PEER_ADDRESS=peer0.org2.medrex.com:9051 CORE_PEER_LOCALMSPID="Org2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/peers/peer0.org2.medrex.com/tls/ca.crt peer channel update -o orderer.medrex.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Org2MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/medrex.com/orderers/orderer.medrex.com/msp/tlscacerts/tlsca.medrex.com-cert.pem
+
+# Chaincode instantiation
+I haven't tried this 
+
+On peer0.org1.medrex.com
+$ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.medrex.com/users/Admin@org1.medrex.com/msp
+$ CORE_PEER_ADDRESS=peer0.org1.medrex.com:7051
+$ CORE_PEER_LOCALMSPID="Org1MSP"
+$ CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.medrex.com/peers/peer0.org1.medrex.com/tls/ca.crt
+
+$ peer chaincode install -n mycc -v 1.0 -p "/opt/gopath/src/github.com/chaincode/medrex-chaincode" -l "node"
+
+####peer1.org1.medrex.com
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.medrex.com/users/Admin@org1.medrex.com/msp
+CORE_PEER_ADDRESS=peer1.org1.medrex.com:8051
+CORE_PEER_LOCALMSPID="Org1MSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.medrex.com/peers/peer0.org1.medrex.com/tls/ca.crt
+
+$ peer chaincode install -n mycc -v 1.0 -p "/opt/gopath/src/github.com/chaincode/medrex-chaincode" -l "node"
+
+####peer0.org2.medrex.com
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/users/Admin@org2.medrex.com/msp
+CORE_PEER_ADDRESS=peer0.org2.medrex.com:9051
+CORE_PEER_LOCALMSPID="Org2MSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/peers/peer0.org2.medrex.com/tls/ca.crt
+
+$ peer chaincode install -n mycc -v 1.0 -p "/opt/gopath/src/github.com/chaincode/medrex-chaincode" -l "node"
+
+####peer0.org2.medrex.com
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/users/Admin@org2.medrex.com/msp
+CORE_PEER_ADDRESS=peer1.org2.medrex.com:10051
+CORE_PEER_LOCALMSPID="Org2MSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.medrex.com/peers/peer0.org2.medrex.com/tls/ca.crt
+
+$ peer chaincode install -n mycc -v 1.0 -p "/opt/gopath/src/github.com/chaincode/medrex-chaincode" -l "node"
+
+
+##Instantiate on channel
+$ peer chaincode instantiate -o orderer.medrex.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/medrex.com/orderers/orderer.medrex.com/msp/tlscacerts/tlsca.medrex.com-cert.pem -C mychannel -n mycc -v 1.0 -c '{"Args":[]}' -P "AND ('Org1MSP.peer',Org2MSP.peer')"
+
+##Upgrade  on channel
+peer chaincode upgrade --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/medrex.com/orderers/orderer.medrex.com/msp/tlscacerts/tlsca.medrex.com-cert.pem -o orderer.medrex.com:7050 -C mychannel -n mycc -l "node" -v 2.1 -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')"
+
+
+
+
+# Bringing down network
+
+$ docker-compose  -f docker-compose-cli.yml -f docker-compose-ca.yml -f docker-compose-couch.yml down --volumes --remove-orphans
+$ rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
+
+###stop all containers
+docker container stop $(docker container ls -aq)
+
+
 
 # Errors
 ERROR: cryptogen: no such command
