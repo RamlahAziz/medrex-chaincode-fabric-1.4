@@ -18,12 +18,12 @@ services:
     - FABRIC_CA_SERVER_TLS_ENABLED=true
     # /etc/hyperledger/fabric-ca-server-config is actually a virtual path. look to volumes 
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.medrex.com-cert.pem #ca.org1.example.com-cert.pem ????
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f384724d8053a3ff708043aed4431e9a4b0953b322f565a66b14cb11adb236db_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/28ab038391d2b6f575e0b5f69cc4810087542c8073d89b4665f4a28377ef43bd_sk
     - FABRIC_CA_SERVER_PORT=7054
     ports:
       - "7054:7054"
     #copied from jawad's wout -cfg allowremove at the end
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.medrex.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/f384724d8053a3ff708043aed4431e9a4b0953b322f565a66b14cb11adb236db_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.medrex.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/28ab038391d2b6f575e0b5f69cc4810087542c8073d89b4665f4a28377ef43bd_sk -b admin:adminpw -d'
     volumes: #this sort -of renames the oldpath:newpath-to-be-used-in-environment-tag-upar
       - ./crypto-config/peerOrganizations/org1.medrex.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.org1.medrex.com #ca.example.com
@@ -38,12 +38,12 @@ services:
     - FABRIC_CA_SERVER_CA_NAME=ca.org2.medrex.com
     - FABRIC_CA_SERVER_TLS_ENABLED=true
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.medrex.com-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/44510b993c7553bc84abfe4a4efa3864aac730e8cbccb11fd97568aca12a16d0_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c63ea0e9eebc6739794146ba8bea00d0e38e5a8d21a287c9513750f1a803e789_sk
     - FABRIC_CA_SERVER_PORT=8054
     ports:
     - "8054:8054"
     #copied from jawad's wout -cfg.identities.allowremove at the end
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.medrex.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/44510b993c7553bc84abfe4a4efa3864aac730e8cbccb11fd97568aca12a16d0_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.medrex.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/c63ea0e9eebc6739794146ba8bea00d0e38e5a8d21a287c9513750f1a803e789_sk -b admin:adminpw -d'
     volumes:
     - ./crypto-config/peerOrganizations/org2.medrex.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.org2.medrex.com
