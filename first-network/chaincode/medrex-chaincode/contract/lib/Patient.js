@@ -33,7 +33,7 @@ class Patient {
       return this;
 
     } else{
-      throw new Error('the MRN is not valid.');
+      throw new Error('the CNIC is not valid.');
     } 
   }
 
@@ -42,11 +42,16 @@ class Patient {
    * validate Patient
    *
    *  
-   * @param cnic - an array of choices 
+   * @param cnic - patient cnic
    * @returns - yes if valid Patient, no if invalid
    */
+<<<<<<< HEAD
   async validatePatient(cnic) {
     //PatientId error checking here, i.e. valid cnic
+=======
+  async validateEMR(cnic) {
+    //PatientId error checking here, i.e. check if valid drivers License, or state ID
+>>>>>>> 39300e498b33f2367cd42004caa435ce9e56c9b2
     if (cnic) {
       return true;
     } else {
