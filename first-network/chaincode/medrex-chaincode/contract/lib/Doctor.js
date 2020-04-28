@@ -1,20 +1,20 @@
 'use strict';
 
-class Patient {
+class Doctor {
   /**
    *
-   * Patient
+   * Doctor
    *
-   * Constructor for a Patient object. Patient has a patientId and registrar that the
-   * patient is . 
+   * Constructor for a Doctor object. Doctor has a doctorId and registrar that the
+   * doctor is . 
    *  
    * @param items - an array of choices 
-   * @param cnic - the unique Id which corresponds to a registered patient
+   * @param cnic - the unique Id which corresponds to a registered doctor
    * @returns - registrar object
    */
   constructor(cnic, firstName, lastName, sex, dob, email) {
 
-    if (this.validatePatient(cnic)) {
+    if (this.validateDoctor(cnic)) {
 
       this.cnic = cnic;
       this.firstName = firstName;
@@ -22,7 +22,7 @@ class Patient {
       this.sex = sex;
       this.dob = dob;
       this.email = email;
-      this.type = 'patient';
+      this.type = 'doctor';
 
       if (this.__isContract) {
         delete this.__isContract;
@@ -33,20 +33,20 @@ class Patient {
       return this;
 
     } else{
-      throw new Error('the MRN is not valid.');
+      throw new Error('the cnic is not valid.');
     } 
   }
 
   /**
    *
-   * validate Patient
+   * validate Doctor
    *
    *  
    * @param cnic - an array of choices 
-   * @returns - yes if valid Patient, no if invalid
+   * @returns - yes if valid Doctor, no if invalid
    */
-  async validatePatient(cnic) {
-    //PatientId error checking here, i.e. valid cnic
+  async validateDoctor(cnic) {
+    //DoctorId error checking here, i.e. valid cnic
     if (cnic) {
       return true;
     } else {
@@ -55,4 +55,4 @@ class Patient {
   }
 }
 
-export default Patient;
+export default Doctor;
