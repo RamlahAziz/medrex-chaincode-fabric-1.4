@@ -47,6 +47,8 @@ $ export CHANNEL_NAME=mychannel
 
 $ configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 $ configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+$ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+$ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
 
 // to use couch instead of goleveldb 
 $ docker-compose -f docker-compose-cli.yml -f docker-compose-ca.yml -f docker-compose-couch.yml up -d
@@ -120,10 +122,12 @@ peer chaincode upgrade --tls --cafile /opt/gopath/src/github.com/hyperledger/fab
 # Bringing down network
 
 $ docker-compose  -f docker-compose-cli.yml -f docker-compose-ca.yml -f docker-compose-couch.yml down --volumes --remove-orphans
-$ rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
 
 ###stop all containers
 docker container stop $(docker container ls -aq)
+
+//this will remove the certificates and public private key configurations, and changes will have to be made in docker-compose-ca and connection profiles.
+$ rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
 
 
 
@@ -138,3 +142,10 @@ Then save and exit and execute source ~/.bashrc or source ~/.profile
 
 ERROR: WARNING: Found orphan containers (ca.org2.medrex.com, ca.org1.medrex.com) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
 SOLUTION: ??
+
+# Notes
+
+path for tlscascerts in connection profiles
+medrex-chaincode-fabric-1.4/first-network/network/crypto-config/peerOrganizations/org1.medrex.com/tlsca/tlsca.org1.medrex.com-cert.pem
+
+medrex-chaincode-fabric-1.4/first-network/network/crypto-config/peerOrganizations/org2.medrex.com/tlsca/tlsca.org2.medrex.com-cert.pem
