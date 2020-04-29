@@ -47,6 +47,8 @@ class EMR {
       this.assessment = assessment;
       // further steps 
       this.plan = plan;
+      // array of trusted doctors
+      this.trustedDocs = [];
 
       if (this.__isContract) {
         delete this.__isContract;
