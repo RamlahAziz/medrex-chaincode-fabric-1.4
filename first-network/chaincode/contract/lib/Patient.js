@@ -8,9 +8,13 @@ class Patient {
    * Constructor for a Patient object. Patient has a patientId and registrar that the
    * patient is . 
    *  
-   * @param items - an array of choices 
-   * @param cnic - the unique Id which corresponds to a registered patient
-   * @returns - registrar object
+   * @param cnic - patient's cnic
+   * @param firstName - first name of patient
+   * @param lastName - last name of patient
+   * @param sex sex of patient
+   * @param dob dd/mm/yyyy
+   * @param email valid email address
+   * @returns - nothing, creates a patient object. in fact idk why we even have this file.
    */
   constructor(cnic, firstName, lastName, sex, dob, email) {
 
@@ -24,15 +28,15 @@ class Patient {
       this.email = email;
       this.type = 'patient';
 
-      if (this.__isContract) {
-        delete this.__isContract;
-      }
-      if (this.name) {
-        delete this.name;
-      }
+      //if (this.__isContract) {
+      //  delete this.__isContract;
+      //}
+      //if (this.name) {
+      //  delete this.name;
+      //}
       return this;
 
-    } else{
+    } else {
       throw new Error('the CNIC is not valid.');
     } 
   }

@@ -1,9 +1,0 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-# bin/
-# node-modules if we have any
-# channel-artifacts/ maybe?
-# crypto-config/ too I think
-
-# you were right we will need a gitignore file. Still haven't figured out how to use it though
