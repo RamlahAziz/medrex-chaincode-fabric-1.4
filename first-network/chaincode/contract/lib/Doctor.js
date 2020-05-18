@@ -5,12 +5,15 @@ class Doctor {
    *
    * Doctor
    *
-   * Constructor for a Doctor object. Doctor has a doctorId and registrar that the
-   * doctor is . 
+   * Constructor for a Doctor object. Doctor has a doctorId 
    *  
-   * @param items - an array of choices 
    * @param cnic - the unique Id which corresponds to a registered doctor
-   * @returns - registrar object
+   * @param firstName - first name of doctor
+   * @param lastName - last name of doctor
+   * @param sex sex of doctor
+   * @param dob dd/mm/yyyy
+   * @param email valid email address
+   * @returns - doctor object
    */
   constructor(cnic, firstName, lastName, sex, dob, email) {
 
@@ -24,12 +27,14 @@ class Doctor {
       this.email = email;
       this.type = 'doctor';
 
+      /*
       if (this.__isContract) {
         delete this.__isContract;
       }
       if (this.name) {
         delete this.name;
-      }
+      }*/
+      
       return this;
 
     } else{
